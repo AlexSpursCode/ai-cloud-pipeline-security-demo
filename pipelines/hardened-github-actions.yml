@@ -1,0 +1,24 @@
+name: hardened-ai-pipeline
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate SBOM
+        run: echo "sbom demo"
+      - name: Dependency scan
+        run: echo "dependency scan demo"
+      - name: Secret scan
+        run: echo "secret scan demo"
+      - name: AI attack simulation
+        run: echo "attack simulation demo"

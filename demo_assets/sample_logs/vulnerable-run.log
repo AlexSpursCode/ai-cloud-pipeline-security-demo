@@ -1,0 +1,4 @@
+[demo] APP_MODE=vulnerable
+[demo] risk mapper gate=fail aggregate_score=88
+[demo] attack simulator gate=fail unsafe_findings=4
+[demo] release gate=blocked

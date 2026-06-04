@@ -1,0 +1,8 @@
+flowchart LR
+    A["GitHub / GitLab"] --> B["CI security controls"]
+    B --> C["FastAPI demo app"]
+    C --> D["Synthetic LLM response layer"]
+    B --> E["Reports and release gate"]
+    F["Guardrails"] --> C
+    G["Attack simulator"] --> C
+    H["Risk mapper"] --> E

@@ -1,0 +1,5 @@
+{
+  "gate": "pass",
+  "unsafe_findings": 0,
+  "summary": "Hardened mode blocks prompt injection, fake secret requests, and system prompt leakage."
+}

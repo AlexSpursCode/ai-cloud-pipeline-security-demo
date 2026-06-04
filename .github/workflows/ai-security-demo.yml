@@ -1,0 +1,52 @@
+name: ai-security-demo
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Generate risk report
+        run: ./scripts/run_risk_mapper.sh
+
+      - name: Start hardened app
+        env:
+          APP_MODE: hardened
+        run: |
+          nohup uvicorn app.main:app --host 127.0.0.1 --port 8000 > demo-app.log 2>&1 &
+          sleep 3
+
+      - name: Run attack simulation
+        run: ./scripts/run_attack_simulation.sh
+
+      - name: Final security gate
+        run: ./scripts/generate_report.sh
+
+      - name: Upload generated reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-security-demo-reports
+          path: reports/generated/

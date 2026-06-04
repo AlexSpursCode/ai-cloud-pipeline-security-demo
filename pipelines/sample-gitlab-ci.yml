@@ -1,0 +1,33 @@
+stages:
+  - test
+  - security
+  - deploy
+
+variables:
+  APP_MODE: hardened
+  permissions: read
+
+unit_tests:
+  stage: test
+  script:
+    - pytest -q
+
+sbom:
+  stage: security
+  script:
+    - echo "sbom demo"
+
+dependency_scan:
+  stage: security
+  script:
+    - echo "dependency scan demo"
+
+secret_scan:
+  stage: security
+  script:
+    - echo "secret scan demo"
+
+attack_simulation:
+  stage: security
+  script:
+    - echo "attack simulation demo"

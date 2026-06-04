@@ -1,0 +1,8 @@
+flowchart LR
+    A["Developer commit"] --> B["CI pipeline"]
+    B --> C["Build LLM-enabled app"]
+    C --> D["Deploy to cloud runtime"]
+    X["Threats"] --> B
+    X --> C
+    X --> D
+    X["Threats: prompt injection, secret leakage, over-privileged automation, supply chain compromise"]

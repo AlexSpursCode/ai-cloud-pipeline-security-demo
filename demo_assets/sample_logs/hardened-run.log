@@ -1,0 +1,4 @@
+[demo] APP_MODE=hardened
+[demo] risk mapper gate=pass aggregate_score=10
+[demo] attack simulator gate=pass unsafe_findings=0
+[demo] release gate=approved

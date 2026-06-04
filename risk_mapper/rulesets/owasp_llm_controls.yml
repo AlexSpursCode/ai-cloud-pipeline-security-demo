@@ -1,0 +1,11 @@
+controls:
+  - id: LLM01
+    name: Prompt injection
+  - id: LLM05
+    name: Supply chain vulnerabilities
+  - id: LLM06
+    name: Sensitive information disclosure
+  - id: LLM07
+    name: Insecure plugin design
+  - id: LLM08
+    name: Excessive agency

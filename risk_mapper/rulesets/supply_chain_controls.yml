@@ -1,0 +1,11 @@
+controls:
+  - id: SUP-01
+    name: SCM credential hygiene
+  - id: SUP-02
+    name: SBOM and provenance
+  - id: SUP-03
+    name: Dependency risk monitoring
+  - id: SUP-04
+    name: Release security testing
+  - id: SUP-05
+    name: Workflow hardening

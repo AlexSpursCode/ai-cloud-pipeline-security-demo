@@ -1,0 +1,11 @@
+controls:
+  - id: CLD-01
+    name: IAM least privilege
+  - id: CLD-02
+    name: Vulnerability management
+  - id: CLD-03
+    name: Asset inventory
+  - id: CLD-04
+    name: Continuous validation
+  - id: CLD-05
+    name: Logging and monitoring

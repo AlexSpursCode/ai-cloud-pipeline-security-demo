@@ -1,0 +1,11 @@
+controls:
+  - id: CI-01
+    name: Secret scanning
+  - id: CI-02
+    name: SBOM generation
+  - id: CI-03
+    name: Dependency scanning
+  - id: CI-04
+    name: AI attack simulation
+  - id: CI-05
+    name: Least-privilege permissions
