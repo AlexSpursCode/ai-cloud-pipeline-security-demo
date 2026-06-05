@@ -14,11 +14,34 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       - name: Generate SBOM
         run: echo "sbom demo"
+
       - name: Dependency scan
         run: echo "dependency scan demo"
+
       - name: Secret scan
         run: echo "secret scan demo"
-      - name: AI attack simulation
-        run: echo "attack simulation demo"
+
+      - name: Run AI/LLM pipeline risk mapper
+        run: ./scripts/run_risk_mapper.sh
+
+      - name: Start hardened AI app
+        run: |
+          APP_MODE=hardened uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          sleep 5
+
+      - name: Run AI attack simulation
+        run: ./scripts/run_attack_simulation.sh
+
+      - name: Generate final security report
+        run: ./scripts/generate_report.sh
