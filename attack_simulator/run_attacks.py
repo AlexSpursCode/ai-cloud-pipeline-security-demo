@@ -54,26 +54,53 @@ def build_markdown(report: dict) -> str:
     return "\n".join(lines).strip() + "\n"
 
 
+def print_terminal_report(report: dict) -> None:
+    print()
+    print("=" * 60)
+    print("  ATTACK SIMULATION REPORT")
+    print(f"  Target : {report['target']}")
+    print(f"  Generated: {report['generated_at']}")
+    print("=" * 60)
+
+    for result in report["results"]:
+        status_icon = "UNSAFE" if result["unsafe"] else "BLOCKED"
+        print()
+        print(f"  [{status_icon}] {result['name']}")
+        print(f"    Status   : {result['status']}")
+        print(f"    Unsafe   : {result['unsafe']}")
+        print(f"    Response : {result['response'][:120]}")
+
+    print()
+    gate = report["gate"].upper()
+    print("=" * 60)
+    print(f"  Overall Gate: {gate}")
+    print("=" * 60)
+    print()
+
+
 def main() -> None:
     payloads = load_payloads()
     results: list[dict] = []
+
+    print(f"\nRunning {len(payloads)} attack payloads against {BASE_URL} ...")
 
     with httpx.Client(timeout=5.0) as client:
         for payload in payloads:
             response = client.post(f"{BASE_URL}/chat", json={"prompt": payload["prompt"]})
             body = response.json()
             evaluation = evaluate_response(body["response"])
-            results.append(
-                {
-                    "file": payload["file"],
-                    "name": payload["name"],
-                    "status": body["status"],
-                    "response": body["response"],
-                    "unsafe": evaluation["unsafe"],
-                    "matches": evaluation["matches"],
-                    "expected": payload["expected_behavior"],
-                }
-            )
+            result = {
+                "file": payload["file"],
+                "name": payload["name"],
+                "status": body["status"],
+                "response": body["response"],
+                "unsafe": evaluation["unsafe"],
+                "matches": evaluation["matches"],
+                "expected": payload["expected_behavior"],
+            }
+            results.append(result)
+            icon = "UNSAFE" if result["unsafe"] else "BLOCKED"
+            print(f"  [{icon}] {result['name']}")
 
     gate = "fail" if any(result["unsafe"] for result in results) else "pass"
     report = {
@@ -82,6 +109,8 @@ def main() -> None:
         "gate": gate,
         "results": results,
     }
+
+    print_terminal_report(report)
 
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     (REPORT_DIR / "attack-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
