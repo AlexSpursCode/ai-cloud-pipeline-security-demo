@@ -7,4 +7,6 @@ echo "Risk mapper completed. Reports available in reports/generated/."
 echo
 echo "Risk Mapper Report:"
 echo "=================================================="
-cat reports/generated/risk-report.md
+RED=$(printf '\033[31m')
+RESET=$(printf '\033[0m')
+sed "s/(high)/${RED}(high)${RESET}/g" reports/generated/risk-report.md
