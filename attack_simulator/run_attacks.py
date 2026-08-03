@@ -54,6 +54,11 @@ def build_markdown(report: dict) -> str:
     return "\n".join(lines).strip() + "\n"
 
 
+RED = "\033[31m"
+GREEN = "\033[32m"
+RESET = "\033[0m"
+
+
 def print_terminal_report(report: dict) -> None:
     print()
     print("=" * 60)
@@ -64,10 +69,12 @@ def print_terminal_report(report: dict) -> None:
 
     for result in report["results"]:
         status_icon = "UNSAFE" if result["unsafe"] else "BLOCKED"
+        unsafe_color = RED if result["unsafe"] else GREEN
+        unsafe_label = f"{unsafe_color}Unsafe detected: {result['unsafe']}{RESET}"
         print()
         print(f"  [{status_icon}] {result['name']}")
         print(f"    Status   : {result['status']}")
-        print(f"    Unsafe   : {result['unsafe']}")
+        print(f"    {unsafe_label}")
         print(f"    Response : {result['response'][:120]}")
 
     print()
@@ -99,8 +106,9 @@ def main() -> None:
                 "expected": payload["expected_behavior"],
             }
             results.append(result)
+            icon_color = RED if result["unsafe"] else GREEN
             icon = "UNSAFE" if result["unsafe"] else "BLOCKED"
-            print(f"  [{icon}] {result['name']}")
+            print(f"  [{icon_color}{icon}{RESET}] {result['name']}")
 
     gate = "fail" if any(result["unsafe"] for result in results) else "pass"
     report = {
